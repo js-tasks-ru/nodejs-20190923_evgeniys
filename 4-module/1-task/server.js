@@ -7,8 +7,6 @@ const server = new http.Server();
 
 server.on('request', async (req, res) => {
   const pathname = url.parse(req.url).pathname.slice(1);
-  console.log(pathname);
-  console.log(path.basename(pathname));
   if (path.basename(pathname) !== pathname) {
     res.statusCode = 400;
     res.end('Invalid path');
@@ -20,7 +18,6 @@ server.on('request', async (req, res) => {
       fs.access(filepath, fs.constants.F_OK, async (err) => {
         if (err) {
           if (err.code === 'ENOENT') {
-            console.log(`${filepath} does not exist`);
             res.statusCode = 404;
             res.end('Not Found');
           } else {
