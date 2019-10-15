@@ -11,7 +11,13 @@ server.on('request', (req, res) => {
 
   switch (req.method) {
     case 'POST':
-
+      const writeFile = fs.createWriteStream(filepath, 'wx');
+      writeFile.on('error', (err) => {
+        if (err.code === 'EEXIST') {
+          res.statusCode = 409;
+          res.end('File already exist');
+        }
+      });
       break;
 
     default:
